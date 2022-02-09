@@ -223,6 +223,10 @@ end
 --- @param path string
 --- @return string
 function M.path_normalize(path)
+  -- If the path has a trailing slash then remove it
+  if path:sub(#path) == '/' then
+    path = path:sub(1, #path-1)
+  end
   local components = vim.split(vim.fn.expand(path), path_separator)
   local num_dots = #vim.tbl_filter(function(v) return v == ".." end, components)
   return M.path_join(M.take(#components - num_dots * 2, components))
